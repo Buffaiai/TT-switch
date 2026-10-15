@@ -1,0 +1,36 @@
+[package]
+name = "tt-switch"
+version = "0.1.0"
+description = "TT Switch —— Trae 账号切换工具（Rust/Tauri 版）"
+edition = "2021"
+
+[lib]
+name = "tt_switch_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+# 默认启用 custom-protocol：`tauri build` 产物加载打包后的前端；
+# `tauri dev` 传 --no-default-features 走 devUrl。
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png", "macos-private-api"] }
+tauri-plugin-opener = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-dialog = "2"
+tt-switch-core = { path = "../crates/tt-switch-core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = "0.4"
+# 每日自动签到的后台定时器（tauri::async_runtime 基于 tokio，此处仅需 time 特性）。
+tokio = { version = "1", features = ["time"] }
+
+# 系统自启（开机静默启动）与单实例互斥：仅桌面目标支持。
+# 单实例插件必须最先注册（见 lib.rs），第二个进程会在建窗口 / 建托盘前退出。
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-autostart = "2"
+tauri-plugin-single-instance = "2"

@@ -1,0 +1,3 @@
+[workspace]
+members = ["crates/tt-switch-core", "crates/tt-switch-server", "src-tauri"]
+resolver = "2"

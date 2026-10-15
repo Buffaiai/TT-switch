@@ -1,0 +1,21 @@
+# Rust
+target/
+
+# Node
+node_modules/
+dist/
+
+# Tauri
+src-tauri/gen/
+
+# macOS
+.DS_Store
+
+# 本地数据
+*.log
+
+# 参考项目（仅本地，不入库）
+wb-switch-ref/
+
+# IDE 工作区配置
+.trae/

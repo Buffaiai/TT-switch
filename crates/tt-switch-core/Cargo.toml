@@ -1,0 +1,20 @@
+[package]
+name = "tt-switch-core"
+version = "0.1.0"
+edition = "2021"
+description = "tt-switch 核心逻辑（账号库 / 快照 / 进程 / 切换），不依赖 Tauri，可被桌面端与 HTTP server 复用"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["v4"] }
+dirs = "5"
+chrono = "0.4"
+base64 = "0.22"
+# state.vscdb / Cookies 是活动 SQLite：IDE 运行时裸 cp 可能得到不一致页，
+# 用 SQLite 在线备份 API 产出事务一致的单文件快照（恢复时 IDE 已关闭，普通拷贝即可）。
+rusqlite = { version = "0.32", features = ["bundled", "backup"] }
+# 账号迁移包：无压缩 tar（纯 Rust，免依赖系统 tar/zip 命令；登录态均为小体积二进制）
+tar = "0.4"
+# 商业数据（积分/Token 用量）轮询：仅本地发起，带超时，不落日志
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
